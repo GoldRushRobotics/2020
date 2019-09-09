@@ -2,6 +2,8 @@
 
 Team Lead: Matt Wells
 
+To find out more about the compeition, visit the [official Github](https://github.com/ncgadgetry/southeastcon2020) for this year's competition!
+
 ## How to use GitHub
 
 #### Install Git
