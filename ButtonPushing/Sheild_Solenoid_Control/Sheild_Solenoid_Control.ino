@@ -22,6 +22,8 @@ void setup() {
   // Enable MotorController Tle94112
   // Note: Required to be done before starting to configure the solenoid
   controller.begin();
+
+  Serial.begin(9600);
   
   // Connect solenoid1 to HB1 and so on...
   solenoid1.connect(solenoid1.HIGHSIDE, controller.TLE_HB1);
@@ -61,47 +63,53 @@ void setup() {
 
 
 void loop() {
+  solenoid0.start(0);
+  solenoid1.start(0);
+  solenoid2.start(0);
+  solenoid3.start(0);
+  solenoid4.start(0);
+  solenoid5.start(0);
+  solenoid6.start(0);
+  solenoid7.start(0);
+  solenoid8.start(0);
+  solenoid9.start(0);
   for(int i = 0; i < 2001; i++){
-      char c = pi[i];
+      char c = pgm_read_byte_near(pi + i);
+      
+      //for testing:
+      //String s = "0123456789";
+      //char c = s.charAt(i);
+      //Serial.println(c);
+      
       if(c == '0'){
         solenoid0.setSpeed(255);
-        delay(25);
         solenoid0.setSpeed(0);
       } else if(c == '1'){
         solenoid1.setSpeed(255);
-        delay(25);
         solenoid1.setSpeed(0);
       } else if(c == '2'){
         solenoid2.setSpeed(255);
-        delay(25);
         solenoid2.setSpeed(0);
       } else if(c == '3'){
         solenoid3.setSpeed(255);
-        delay(25);
         solenoid3.setSpeed(0);
       } else if(c == '4'){
         solenoid4.setSpeed(255);
-        delay(25);
         solenoid4.setSpeed(0);
       } else if(c == '5'){
         solenoid5.setSpeed(255);
-        delay(25);
         solenoid5.setSpeed(0);
       } else if(c == '6'){
         solenoid6.setSpeed(255);
-        delay(25);
         solenoid6.setSpeed(0);
       } else if(c == '7'){
         solenoid7.setSpeed(255);
-        delay(25);
         solenoid7.setSpeed(0);
       } else if(c == '8'){
         solenoid8.setSpeed(255);
-        delay(25);
         solenoid8.setSpeed(0);
       } else if(c == '9'){
         solenoid9.setSpeed(255);
-        delay(25);
         solenoid9.setSpeed(0);
       }
   }
