@@ -222,12 +222,12 @@ boolean output_errors = false;  // true or false
 
 // Magnetometer (standard calibration mode)
 // "magn x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define MAGN_X_MIN ((float) -600)
-#define MAGN_X_MAX ((float) 600)
-#define MAGN_Y_MIN ((float) -600)
-#define MAGN_Y_MAX ((float) 600)
-#define MAGN_Z_MIN ((float) -600)
-#define MAGN_Z_MAX ((float) 600)
+#define MAGN_X_MIN ((float) -789.00)
+#define MAGN_X_MAX ((float) 856.00)
+#define MAGN_Y_MIN ((float) -1143.00)
+#define MAGN_Y_MAX ((float) 933.00)
+#define MAGN_Z_MIN ((float) -984.00)
+#define MAGN_Z_MAX ((float) 946)
 
 // Magnetometer (extended calibration mode)
 // Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
@@ -237,9 +237,9 @@ boolean output_errors = false;  // true or false
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
-#define GYRO_AVERAGE_OFFSET_X ((float) 0.0)
-#define GYRO_AVERAGE_OFFSET_Y ((float) 0.0)
-#define GYRO_AVERAGE_OFFSET_Z ((float) 0.0)
+#define GYRO_AVERAGE_OFFSET_X ((float) -59.31)
+#define GYRO_AVERAGE_OFFSET_Y ((float) 37.77)
+#define GYRO_AVERAGE_OFFSET_Z ((float) 1.39)
 
 /*
 // Calibration example:
