@@ -148,13 +148,14 @@ void loop() {
       dataLine = "";
     }
   } */
+  yaw = actOnGyroReading(data);
  Serial.println(yaw);
-   while(yaw != 179) {
+   /*while(yaw != 179) {
     data = getData();
     yaw = actOnGyroReading(data);
     Serial.println(yaw);
     turnBackwards();
-  }
+  }*/
   
 }
 
