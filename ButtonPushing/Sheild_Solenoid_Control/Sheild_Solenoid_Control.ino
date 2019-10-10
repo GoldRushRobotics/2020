@@ -87,43 +87,43 @@ void loop() {
       
       if(c == '0'){
         controller.configHB(controller.TLE_HB10, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB10, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '1'){
         controller.configHB(controller.TLE_HB1, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB1, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '2'){
         controller.configHB(controller.TLE_HB2, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB2, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '3'){
         controller.configHB(controller.TLE_HB3, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB3, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '4'){
         controller.configHB(controller.TLE_HB4, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB4, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '5'){
         controller.configHB(controller.TLE_HB5, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB5, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '6'){
         controller.configHB(controller.TLE_HB6, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB6, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '7'){
         controller.configHB(controller.TLE_HB7, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB7, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '8'){
         controller.configHB(controller.TLE_HB8, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB8, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '9'){
         controller.configHB(controller.TLE_HB9, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
-        delay(25);
+        delay(19);
         controller.configHB(controller.TLE_HB9, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       }
   }
