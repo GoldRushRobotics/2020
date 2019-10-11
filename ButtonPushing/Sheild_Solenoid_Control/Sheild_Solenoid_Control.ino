@@ -73,44 +73,58 @@ void loop() {
   solenoid7.start(0);
   solenoid8.start(0);
   solenoid9.start(0);
+
+  controller.writeReg(Tle94112::PWM1_DC_CTRL, 0x03, 0xFF, 255);
+  controller.writeReg(Tle94112::PWM2_DC_CTRL, 0x03, 0xFF, 0);
+  
   for(int i = 0; i < 2001; i++){
       char c = pgm_read_byte_near(pi + i);
       
       //for testing:
       //String s = "0123456789";
-      //char c = s.charAt(i);
+      //char c = '0'; 
       //Serial.println(c);
       
       if(c == '0'){
-        solenoid0.setSpeed(255);
-        solenoid0.setSpeed(0);
+        controller.configHB(controller.TLE_HB10, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB10, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '1'){
-        solenoid1.setSpeed(255);
-        solenoid1.setSpeed(0);
+        controller.configHB(controller.TLE_HB1, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB1, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '2'){
-        solenoid2.setSpeed(255);
-        solenoid2.setSpeed(0);
+        controller.configHB(controller.TLE_HB2, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB2, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '3'){
-        solenoid3.setSpeed(255);
-        solenoid3.setSpeed(0);
+        controller.configHB(controller.TLE_HB3, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB3, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '4'){
-        solenoid4.setSpeed(255);
-        solenoid4.setSpeed(0);
+        controller.configHB(controller.TLE_HB4, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB4, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '5'){
-        solenoid5.setSpeed(255);
-        solenoid5.setSpeed(0);
+        controller.configHB(controller.TLE_HB5, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB5, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '6'){
-        solenoid6.setSpeed(255);
-        solenoid6.setSpeed(0);
+        controller.configHB(controller.TLE_HB6, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB6, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '7'){
-        solenoid7.setSpeed(255);
-        solenoid7.setSpeed(0);
+        controller.configHB(controller.TLE_HB7, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB7, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '8'){
-        solenoid8.setSpeed(255);
-        solenoid8.setSpeed(0);
+        controller.configHB(controller.TLE_HB8, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB8, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       } else if(c == '9'){
-        solenoid9.setSpeed(255);
-        solenoid9.setSpeed(0);
+        controller.configHB(controller.TLE_HB9, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
+        delay(19);
+        controller.configHB(controller.TLE_HB9, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       }
   }
 }
