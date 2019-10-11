@@ -1,0 +1,4 @@
+Note: the gyroscope we are using require you to install Arduino libraries to run
+
+To install these libraries head to Sketch > Include Library > Manage Libraries...
+Install "Adafruit Unified Sensor" and "Adafruit BNO055"

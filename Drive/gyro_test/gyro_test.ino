@@ -14,7 +14,7 @@
 enum DriveState {
   lineFollow,
   turn
-}
+};
 
 DriveState state = lineFollow;
 
@@ -89,7 +89,7 @@ void setPower(double leftPower, double rightPower)
   right.write(90 + rightPower * 90);
 }
 
-void lineFollow(double heading) {
+void lineFollowAction(double heading) {
   Serial.println("Heading: " + String(heading));
   double speedModCalc = signum(heading) * TURN_MULT * pow(abs(heading), TURN_POW);
   double speedMod = clip(speedModCalc, -MAX_SPEED_MOD, MAX_SPEED_MOD);
@@ -99,7 +99,7 @@ void lineFollow(double heading) {
   setPower(leftPower, rightPower);
 }
 
-void turn(double heading) {
+void turnAction(double heading) {
   Serial.println("ERROR: not yet implemented");
 }
 
@@ -141,9 +141,9 @@ void loop() {
   updateHeading();
   
   if (state == lineFollow) {
-    lineFollow(currHeading);
-  else if (state == turn) {
-    turn(currHeading);
+    lineFollowAction(currHeading);
+  } else if (state == turn) {
+    turnAction(currHeading);
   }
 
   // sleep to allow for reading of values
