@@ -1,3 +1,5 @@
+
+
 bool isValidDouble(String s) {
   bool hasUsedDigit = true;
   bool hasUsedDot = false;
@@ -19,6 +21,17 @@ bool isValidDouble(String s) {
     }
   }
   return hasUsedDigit;
+}
+
+double readDouble() {
+  if (Serial.available()) {
+    String s = Serial.readString();
+    s = s.substring(0, s.length() - 1);
+    if (isValidDouble(s)) {
+      return s.toDouble();
+    }
+  }
+  return -99;
 }
 
 double getHeading() {
@@ -48,6 +61,6 @@ double clip(double value, double minVal, double maxVal) {
 
 void setPower(double leftPower, double rightPower)
 {
-  left.write(90 - leftPower * 90);
-  right.write(90 + rightPower * 90);
+  servoLeft.write(90 - leftPower * 90);
+  servoRight.write(90 + rightPower * 90);
 }

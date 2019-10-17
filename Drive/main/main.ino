@@ -3,9 +3,23 @@
 #include <Adafruit_BNO055.h>
 #include <Adafruit_Sensor.h>
 #include <utility/imumaths.h>
+#include "LightSensor.h"
 
-Servo left;
-Servo right;
+#define SERVO_LEFT A0
+#define SERVO_RIGHT A1
+
+#define LIGHT_CENTER_LEFT 2
+#define LIGHT_CENTER_RIGHT 3
+#define LIGHT_OUTER_LEFT 4
+#define LIGHT_OUTER_RIGHT 5
+
+Servo servoLeft;
+Servo servoRight;
+
+LightSensor lightCenterLeft;
+LightSensor lightCenterRight;
+LightSensor lightOuterLeft;
+LightSensor lightOuterRight;
 
 double headingOffset = 0;
 double targetHeading = 0;
@@ -14,20 +28,22 @@ double currHeading = 0;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 void loop() {
-  lineFollowForSeconds(6);
+  lineFollowForSeconds(10);
   turnToHeading(180);
-  lineFollowForSeconds(6);
-  turnToHeading(0);
+  lineFollowForSeconds(4);
+  idle();
 }
 
 void setup() {
   Serial.begin(9600);
   
-  left.attach(A0);  // left servo
-  right.attach(A1); // right servo
+  servoLeft.attach(SERVO_LEFT);  // left servo
+  servoRight.attach(SERVO_RIGHT); // right servo
 
-  pinMode(2, INPUT); // left light
-  pinMode(3, INPUT); // right light
+  lightCenterLeft.attach(LIGHT_CENTER_LEFT);
+  lightCenterRight.attach(LIGHT_CENTER_RIGHT);
+  lightOuterLeft.attach(LIGHT_OUTER_LEFT);
+  lightOuterRight.attach(LIGHT_OUTER_RIGHT);
 
   // initialize the imu
   if(!bno.begin())
