@@ -3,7 +3,7 @@
 #include <Adafruit_BNO055.h>
 #include <Adafruit_Sensor.h>
 #include <utility/imumaths.h>
-#include "LightSensor.h"
+#include "Sensors.h"
 
 #define SERVO_LEFT A0
 #define SERVO_RIGHT A1
@@ -28,6 +28,8 @@ double currHeading = 0;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 void loop() {
+  setPower(1, 1);
+  while(true) { delay(100); }
   lineFollowForSeconds(10);
   turnToHeading(180);
   lineFollowForSeconds(4);

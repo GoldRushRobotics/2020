@@ -116,6 +116,7 @@ void turnToHeading(double target) {
 }
 
 void idle() {
+  setPower(0, 0);
   while (true) {
     delay(100);
   }
