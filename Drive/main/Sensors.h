@@ -15,8 +15,6 @@ private:
   double direction = 1;
   static void ai0();
   static void ai1();
-  double circumference = M_PI * 96; //In millimeters
-  double distance;
 public:
   void attach();
   void setDirection(double);

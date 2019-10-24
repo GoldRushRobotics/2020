@@ -2,7 +2,7 @@
 #include "Arduino.h"
 #include <math.h>
 
-#define TICKS_PER_REV = 256 / (96 * M_PI);
+#define TICKS_PER_REV = 256 / (96 * M_PI); 
 void LightSensor::attach(int pin) {
   _pin = pin;
   pinMode(pin, INPUT);
@@ -53,7 +53,7 @@ void Encoder::setDirection(double dir) {
 }
 
 double Encoder::getDistance() {
-  return Encoder::ticks * TICKS_PER_REV;
+  return Encoder::getTicks * TICKS_PER_REV;
 }
 
 void Encoder::reset() {
