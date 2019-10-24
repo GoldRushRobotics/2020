@@ -1,5 +1,6 @@
 #include "Sensors.h"
 #include "Arduino.h"
+#include <math.h>
 
 void LightSensor::attach(int pin) {
   _pin = pin;
@@ -17,7 +18,7 @@ int LightSensor::read() {
 
 volatile double Encoder::counter = 0;
 
-void Encoder::attach() {
+void Encoder::attach() { 
   pinMode(2, INPUT_PULLUP);
   pinMode(3, INPUT_PULLUP);
   attachInterrupt(0, ai0, RISING);
@@ -48,6 +49,14 @@ void Encoder::setDirection(double dir) {
   } else {
     direction = 0;
   }
+}
+
+void Encoder::setDistance() {
+   ticks = getTicks();
+   distance = (ticks / 360) * circumference;
+}
+double Encoder::getDistance() {
+  return Encoder::distance;
 }
 
 void Encoder::reset() {

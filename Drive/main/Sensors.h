@@ -1,6 +1,6 @@
 #ifndef __SENSORS_H__
 #define __SENSORS_H__
-
+#include <math.h>
 class LightSensor {
 private:
   int _pin = -1;
@@ -15,6 +15,8 @@ private:
   double direction = 1;
   static void ai0();
   static void ai1();
+  double circumference = M_PI * 96; //In millimeters
+  double distance;
 public:
   void attach();
   void setDirection(double);
