@@ -51,9 +51,9 @@ void Encoder::setDirection(double dir) {
   }
 }
 
-void Encoder::setDistance() {
+void Encoder::setDistance() { 
    ticks = getTicks();
-   distance = (ticks / 360) * circumference;
+   distance = (ticks / 256) * circumference;
 }
 double Encoder::getDistance() {
   return Encoder::distance;
