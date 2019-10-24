@@ -45,7 +45,7 @@ void lineFollowForSeconds(double seconds) {
   }
 }
 
-void lineFollowLoopIteration() {
+void lineFollowLoopIteration() { //stays on the line with infrared sensors
   if (lightCenterLeft.read() == 0 && lightCenterRight.read() == 1) {
     setPower(LF_BASE_SPEED - LF_SPEED_MOD, LF_BASE_SPEED); // turn left
   } else if (lightCenterLeft.read() == 1 && lightCenterRight.read() == 0) {

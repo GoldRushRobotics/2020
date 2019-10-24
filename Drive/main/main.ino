@@ -27,7 +27,7 @@ double currHeading = 0;
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
-void loop() {
+void loop() { //code that can be modified to make robot do whatever
   setPower(1, 1);
   while(true) { delay(100); }
   lineFollowForSeconds(10);
