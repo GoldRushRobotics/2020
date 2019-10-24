@@ -59,8 +59,8 @@ double clip(double value, double minVal, double maxVal) {
   return min(max(value, minVal), maxVal);
 }
 
-void setPower(double leftPower, double rightPower)
+void setPower(double leftPower, double rightPower) //sets the speed of the servos
 {
-  servoLeft.write(90 - leftPower * 90);
+  servoLeft.write(90 - leftPower * 90); 
   servoRight.write(90 + rightPower * 90);
 }

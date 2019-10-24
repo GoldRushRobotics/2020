@@ -40,7 +40,7 @@ void lineFollowForBarCount(int barCount) {
 
 void lineFollowForSeconds(double seconds) {
   unsigned long startTime = millis();
-  while (millis() - startTime < seconds * 1000) {
+  while (millis() - startTime < seconds * 1000) { //loop until seconds is reached
     lineFollowLoopIteration();
   }
 }

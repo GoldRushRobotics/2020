@@ -36,7 +36,7 @@ void loop() {
   idle();
 }
 
-void setup() {
+void setup() { //setups up all sensors / actuators
   Serial.begin(9600);
   
   servoLeft.attach(SERVO_LEFT);  // left servo
