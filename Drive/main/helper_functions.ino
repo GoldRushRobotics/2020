@@ -1,4 +1,10 @@
+#define WHEEL_DIAMETER_CM 9.6
+#define TICKS_PER_ROTATION 256
+#define TICKS_PER_CM (TICKS_PER_ROTATION / (WHEEL_DIAMETER_CM * M_PI))
 
+double distanceToTicks(double distance) {
+  return distance * TICKS_PER_CM;
+}
 
 bool isValidDouble(String s) {
   bool hasUsedDigit = true;
@@ -63,4 +69,8 @@ void setPower(double leftPower, double rightPower) //sets the speed of the servo
 {
   servoLeft.write(90 - leftPower * 90); 
   servoRight.write(90 + rightPower * 90);
+}
+
+void setPower(double power) {
+  setPower(power, power);
 }

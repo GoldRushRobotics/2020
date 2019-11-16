@@ -20,6 +20,7 @@ public:
   void setDirection(double);
   void reset();
   double getTicks();
+  double getDistance();
 };
 
 #endif
