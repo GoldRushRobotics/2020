@@ -85,12 +85,14 @@ void lineFollowForSeconds(double seconds) {
 }
 
 void lineFollowLoopIteration() { //stays on the line with infrared sensors
-  if (lightCenterLeft.read() == 0 && lightCenterRight.read() == 1) {
-    setPower(LF_BASE_SPEED - LF_SPEED_MOD, LF_BASE_SPEED); // turn left
-  } else if (lightCenterLeft.read() == 1 && lightCenterRight.read() == 0) {
-    setPower(LF_BASE_SPEED, LF_BASE_SPEED - LF_SPEED_MOD); // turn right
-  } else {
+  if (lightLeft.read() == 1 && lightRight.read() == 1) {
     setPower(LF_BASE_SPEED, LF_BASE_SPEED); // go straight
+  } 
+  else if (lightCenter.read() == 0) {
+    setPower(LF_BASE_SPEED - LF_SPEED_MOD, LF_BASE_SPEED); // turn left
+  }
+  else if (lightCenter.read() == 1) {
+    setPower(LF_BASE_SPEED, LF_BASE_SPEED - LF_SPEED_MOD); // turn right
   }
 }
 

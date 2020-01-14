@@ -6,23 +6,22 @@
 #include <math.h>
 #include "Sensors.h"
 
-#define SERVO_LEFT A0
-#define SERVO_RIGHT A1
+#define SERVO_LEFT 11
+#define SERVO_RIGHT 10
 
 #define LIGHT_CENTER_LEFT 6
-#define LIGHT_CENTER_RIGHT 7
-#define LIGHT_OUTER_LEFT 4
-#define LIGHT_OUTER_RIGHT 5
+#define LIGHT_LEFT 4
+#define LIGHT_RIGHT 5
 
 Servo servoLeft;
 Servo servoRight;
 
 Encoder enc;
 
-LightSensor lightCenterLeft;
-LightSensor lightCenterRight;
-LightSensor lightOuterLeft;
-LightSensor lightOuterRight;
+LightSensor lightleft;
+LightSensor lightCenter;
+LightSensor lightRight;
+
 
 double headingOffset = 0;
 double targetHeading = 0;
@@ -31,17 +30,8 @@ double currHeading = 0;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 void loop() { //code that can be modified to make robot do whatever
-  delay(1000);
-  setPower(1);
-  delay(10);
-  setPower(0);
   
-  driveDistance(100, 0.3);
   
-  double currHeading = 90;
-  turnToHeading(currHeading);
-  driveDistanceOnHeading(100, 0.3, currHeading);
-  idle();
 }
 
 /*
@@ -64,10 +54,9 @@ void setup() { //setups up all sensors / actuators
 
   enc.attach();
 
-  lightCenterLeft.attach(LIGHT_CENTER_LEFT);
-  lightCenterRight.attach(LIGHT_CENTER_RIGHT);
-  lightOuterLeft.attach(LIGHT_OUTER_LEFT);
-  lightOuterRight.attach(LIGHT_OUTER_RIGHT);
+  lightLeft.attach(LIGHT_LEFT);
+  lightCenter.attach(LIGHT_CENTER_LEFT);
+  lightRight.attach(LIGHT_RIGHT);
 
   // initialize the imu
   if(!bno.begin())
