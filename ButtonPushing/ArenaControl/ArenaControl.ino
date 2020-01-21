@@ -122,7 +122,7 @@ void debounceButtons(boolean *newPress, int *numPressed) {
 void startCompetition() {
 
    boolean readyToStart = false; // true when ready to start the contest
-   uint32_t ledDelay = 500;      // for a 2hz rate
+   uint32_t ledDelay = 40;      // for a 2hz rate
    uint32_t start = millis();    // start of delay for each led dance
    int led = 1;                  // where to start the dance
    int direction = -1;           // initial direction of the light dance
@@ -187,8 +187,10 @@ void endCompetition() {
    Serial.println(F("Time's up\n"));
    Serial.print(F("Num sequenced currently:"));
    Serial.println(numSequenced);
-   Serial.print(F("Extra not sequenced currently:"));
-   Serial.println(extraNotSequenced);
+//   Serial.print(F("Extra not sequenced currently:"));
+//   Serial.println(extraNotSequenced);
+   Serial.print(F("Number messed up on:"));
+   Serial.println(pi[numSequenced]);
    
    // Calculate and print out the score - 10 points for each one
    //   sequenced correctly, plus 1 point (max of 100) for those not
@@ -217,6 +219,7 @@ void setup() {
       pinMode(LED_PIN(i), OUTPUT);
       pinMode(BUTTON_PIN(i), INPUT_PULLUP);
       setLED(i, false);
+      //Serial.print("Button ");Serial.print(i);Serial.println(" got set up");
    }
    
    // Wait for the competition to start
@@ -266,7 +269,6 @@ void loop() {
 
      // Else exactly one was pressed, and this is a new press
      else if (newPress) {
-        
         // Get the 0..9 value of the current sequence digit
         int digit = pi[piDigitPosn] - '0';
 
@@ -292,10 +294,9 @@ void loop() {
 
       // If this is a new press, count it and flash all the digits
       if (newPress) {
-         extraNotSequenced++;
-         flashAllLEDs();
+        endCompetition();
+         //extraNotSequenced++;
+//         flashAllLEDs();
       }
    }
 }
-
-
