@@ -8,7 +8,7 @@ void LightSensor::attach(int pin) {
 
 int LightSensor::read() {
   if (_pin >= 0) {
-    return digitalRead(_pin);
+    return !digitalRead(_pin); //reversed the number because white = 0, black = 1
   }
   Serial.println("ERROR: light sensor attempted to be read before being attached!");
   return -1;

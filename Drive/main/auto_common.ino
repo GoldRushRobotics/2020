@@ -1,6 +1,6 @@
 #define DRIVE_BASE_SPEED 0.3
 #define DRIVE_MAX_SPEED_MOD 0.1
-#define DRIVE_TURN_MULT 0.06
+#define DRIVE_TURN_MULT 0.02
 #define DRIVE_TURN_POW 0.7
 #define LIGHT_TURN_MOD 5
 
@@ -36,7 +36,7 @@ void driveDistance(double distance, double power) {
 }
 
 void driveDistanceOnHeading(double distance, double power, double target) {
-  Serial.println("Driving distance of " + String(distance) + " cm at heading " + String(target));
+  //Serial.println("Driving distance of " + String(distance) + " cm at heading " + String(target));
   if (distance == 0 || power == 0) {
     return;
   }
@@ -49,9 +49,12 @@ void driveDistanceOnHeading(double distance, double power, double target) {
   targetHeading = target;
   
   setPower(power);
+  unsigned long startTime = millis();
   while (abs(enc.getTicks()) < ticks) {
     double heading = getHeading();
-    Serial.println("Heading: " + String(heading) + "\tEncoder: " + String(enc.getTicks()));
+//    Serial.println("Heading: " + String(heading) + "\tEncoder: " + String(enc.getTicks()));
+    //Serial.println(String(millis() - startTime) + "," + String(enc.getTicks()));
+    Serial.print(millis() - startTime); Serial.print(", "); Serial.println(enc.getTicks());
     double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
     double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
     double leftPower = (DRIVE_BASE_SPEED - speedMod);
@@ -68,7 +71,7 @@ void lineFollowForBarCount(int barCount) {
   while (currBarCount < barCount) {
     lineFollowLoopIteration();
 
-    bool currSeeWhite = lightOuterLeft.read() == 1 && lightOuterRight.read() == 1;
+    bool currSeeWhite = lightLeft.read() == 1 && lightRight.read() == 1;
     if (!prevSeeWhite && currSeeWhite) {
       currBarCount++;
     }
@@ -88,12 +91,25 @@ void lineFollowLoopIteration() { //stays on the line with infrared sensors
   if (lightLeft.read() == 1 && lightRight.read() == 1) {
     setPower(LF_BASE_SPEED, LF_BASE_SPEED); // go straight
   } 
-  else if (lightCenter.read() == 0) {
+  else if (lightCenter.read() == 1) {
     setPower(LF_BASE_SPEED - LF_SPEED_MOD, LF_BASE_SPEED); // turn left
   }
-  else if (lightCenter.read() == 1) {
+  else if (lightCenter.read() == 0) {
     setPower(LF_BASE_SPEED, LF_BASE_SPEED - LF_SPEED_MOD); // turn right
   }
+}
+
+void getOffBlock(){
+    setPower(1,1);
+
+    while(true){
+      if(lightLeft.read() == 1 && lightRight.read() == 1) {
+    }
+    else {
+      return;
+    }
+  }
+  
 }
 
 void driveGyroForSeconds(double seconds, double target) {

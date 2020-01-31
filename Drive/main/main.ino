@@ -9,16 +9,16 @@
 #define SERVO_LEFT 11
 #define SERVO_RIGHT 10
 
-#define LIGHT_CENTER_LEFT 6
-#define LIGHT_LEFT 4
-#define LIGHT_RIGHT 5
+#define LIGHT_CENTER_LEFT A5
+#define LIGHT_LEFT A4
+#define LIGHT_RIGHT 4
 
 Servo servoLeft;
 Servo servoRight;
 
 Encoder enc;
 
-LightSensor lightleft;
+LightSensor lightLeft;
 LightSensor lightCenter;
 LightSensor lightRight;
 
@@ -30,7 +30,24 @@ double currHeading = 0;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 void loop() { //code that can be modified to make robot do whatever
-  
+  //Serial.println(enc.getTicks());  
+  /*driveDistance(13, -.3);
+  delay(1000);
+  lineFollowForBarCount(5);
+  idle();*/
+
+  delay(1000);
+  driveDistanceOnHeading(6, .5, 0);
+  delay(300);
+  turnToHeading(90);
+  delay(300);
+  driveDistanceOnHeading(30, .5,  90);
+  //driveDistanceOnHeading(10, .5,  0);
+  //delay(1000);
+  //turnToHeading(90);
+  //delay(1000);
+  //driveDistanceOnHeading(35, .5,  90);
+  delay(1000000);
   
 }
 
@@ -61,7 +78,7 @@ void setup() { //setups up all sensors / actuators
   // initialize the imu
   if(!bno.begin())
   {
-    /* There was a problem detecting the BNO055 ... check your connections */
+    // There was a problem detecting the BNO055 ... check your connections 
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     while(1);
   }

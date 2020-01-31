@@ -1,5 +1,5 @@
 #define WHEEL_DIAMETER_CM 9.6
-#define TICKS_PER_ROTATION 256
+#define TICKS_PER_ROTATION 500 //370
 #define TICKS_PER_CM (TICKS_PER_ROTATION / (WHEEL_DIAMETER_CM * M_PI))
 
 double distanceToTicks(double distance) {
