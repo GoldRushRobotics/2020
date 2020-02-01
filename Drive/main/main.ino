@@ -9,9 +9,9 @@
 #define SERVO_LEFT 11
 #define SERVO_RIGHT 10
 
-#define LIGHT_CENTER_LEFT A5
-#define LIGHT_LEFT A4
-#define LIGHT_RIGHT 4
+#define LIGHT_LEFT 4
+#define LIGHT_CENTER 8
+#define LIGHT_RIGHT 7
 
 Servo servoLeft;
 Servo servoRight;
@@ -36,18 +36,27 @@ void loop() { //code that can be modified to make robot do whatever
   lineFollowForBarCount(5);
   idle();*/
 
+//  delay(1000);
+//  driveDistanceOnHeading(100, 0);
+
+  lineFollowForBarCount(5);
+
   delay(1000);
-  driveDistanceOnHeading(6, .5, 0);
+  turnToHeading(0);
+  delay(300);
+  driveDistanceOnHeading(6, 0);
   delay(300);
   turnToHeading(90);
   delay(300);
-  driveDistanceOnHeading(30, .5,  90);
+  driveDistanceOnHeading(30,  90);
+
+
   //driveDistanceOnHeading(10, .5,  0);
   //delay(1000);
   //turnToHeading(90);
   //delay(1000);
   //driveDistanceOnHeading(35, .5,  90);
-  delay(1000000);
+  idle();
   
 }
 
@@ -61,6 +70,11 @@ void loop() { //code that can be modified to make robot do whatever
  * IMU:
  * SDA -> A4
  * SCL -> A5
+ * 
+ * LIGHT:
+ * L -> 4
+ * C -> 8
+ * R -> 7
  */
 
 void setup() { //setups up all sensors / actuators
@@ -72,7 +86,7 @@ void setup() { //setups up all sensors / actuators
   enc.attach();
 
   lightLeft.attach(LIGHT_LEFT);
-  lightCenter.attach(LIGHT_CENTER_LEFT);
+  lightCenter.attach(LIGHT_CENTER);
   lightRight.attach(LIGHT_RIGHT);
 
   // initialize the imu
@@ -85,4 +99,6 @@ void setup() { //setups up all sensors / actuators
   delay(1000);
   bno.setExtCrystalUse(true);
   Serial.println("IMU initialized!");
+  delay(500);
+  headingOffset = getHeading();
 }

@@ -1,7 +1,7 @@
 #define DRIVE_BASE_SPEED 0.3
 #define DRIVE_MAX_SPEED_MOD 0.1
-#define DRIVE_TURN_MULT 0.02
-#define DRIVE_TURN_POW 0.7
+#define DRIVE_TURN_MULT 0.01
+#define DRIVE_TURN_POW 1.2
 #define LIGHT_TURN_MOD 5
 
 #define TURN_MAX_SPEED_MOD 0.3
@@ -10,8 +10,8 @@
 #define TURN_TURN_POW 0.5
 #define TURN_DEGREE_CUTOFF 5
 
-#define LF_BASE_SPEED 0.5
-#define LF_SPEED_MOD 0.25
+#define LF_BASE_SPEED 0.4
+#define LF_SPEED_MOD 0.1
 
 void driveDistance(double distance, double power) {
   Serial.println("Driving distance of " + String(distance) + " cm");
@@ -35,20 +35,20 @@ void driveDistance(double distance, double power) {
   setPower(0);
 }
 
-void driveDistanceOnHeading(double distance, double power, double target) {
+void driveDistanceOnHeading(double distance, double target) {
   //Serial.println("Driving distance of " + String(distance) + " cm at heading " + String(target));
-  if (distance == 0 || power == 0) {
+  if (distance == 0) {// || power == 0) {
     return;
   }
-  if (distance < 0) {
-    power *= -1;
-  }
+//  if (distance < 0) {
+//    power *= -1;
+//  }
   
   enc.reset();
   double ticks = abs(distanceToTicks(distance));
   targetHeading = target;
   
-  setPower(power);
+  setPower(DRIVE_BASE_SPEED);
   unsigned long startTime = millis();
   while (abs(enc.getTicks()) < ticks) {
     double heading = getHeading();
@@ -77,6 +77,7 @@ void lineFollowForBarCount(int barCount) {
     }
     prevSeeWhite = currSeeWhite;
   }
+  setPower(0);
 }
 
 void lineFollowForSeconds(double seconds) {
