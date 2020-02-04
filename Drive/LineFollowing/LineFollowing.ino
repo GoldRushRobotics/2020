@@ -18,10 +18,10 @@ void setup()
 
 void setPower(double leftPower, double rightPower)
 {
-  left.write(90 - leftPower * 90);
-  right.write(90 + rightPower * 90);
+//  left.write(90 - leftPower * 90);
+//  right.write(90 + rightPower * 90);
 }
-
+ 
 void loop()
 {
   int leftSensor = digitalRead(2);

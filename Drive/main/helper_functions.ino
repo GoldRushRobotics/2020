@@ -3,6 +3,9 @@
 #define TICKS_PER_CM (TICKS_PER_ROTATION / (WHEEL_DIAMETER_CM * M_PI))
 
 double distanceToTicks(double distance) {
+  if(distance < 0){
+    return -1.0 * distance * TICKS_PER_CM;
+  }
   return distance * TICKS_PER_CM;
 }
 

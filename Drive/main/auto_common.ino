@@ -40,26 +40,43 @@ void driveDistanceOnHeading(double distance, double target) {
   if (distance == 0) {// || power == 0) {
     return;
   }
-//  if (distance < 0) {
-//    power *= -1;
-//  }
+  if (distance < 0) {
+    enc.reset();
+    double ticks = abs(distanceToTicks(distance));
+    targetHeading = target;
   
-  enc.reset();
-  double ticks = abs(distanceToTicks(distance));
-  targetHeading = target;
+    setPower(-1.0 * DRIVE_BASE_SPEED);
+    unsigned long startTime = millis();
+    while (abs(enc.getTicks()) < ticks) {
+      double heading = getHeading();
+      //Serial.println("Heading: " + String(heading) + "\tEncoder: " + String(enc.getTicks()));
+      //Serial.println(String(millis() - startTime) + "," + String(enc.getTicks()));
+      //Serial.print(millis() - startTime); Serial.print(", "); Serial.println(enc.getTicks());
+      double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
+      double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
+      double leftPower = (-1.0 * DRIVE_BASE_SPEED - speedMod);
+      double rightPower = (-1.0 * DRIVE_BASE_SPEED + speedMod);
+      setPower(leftPower, rightPower);
+    }
+  }
+  else{
+    enc.reset();
+    double ticks = abs(distanceToTicks(distance));
+    targetHeading = target;
   
-  setPower(DRIVE_BASE_SPEED);
-  unsigned long startTime = millis();
-  while (abs(enc.getTicks()) < ticks) {
-    double heading = getHeading();
-//    Serial.println("Heading: " + String(heading) + "\tEncoder: " + String(enc.getTicks()));
-    //Serial.println(String(millis() - startTime) + "," + String(enc.getTicks()));
-    Serial.print(millis() - startTime); Serial.print(", "); Serial.println(enc.getTicks());
-    double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
-    double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
-    double leftPower = (DRIVE_BASE_SPEED - speedMod);
-    double rightPower = (DRIVE_BASE_SPEED + speedMod);
-    setPower(leftPower, rightPower);
+    setPower(DRIVE_BASE_SPEED);
+    unsigned long startTime = millis();
+    while (abs(enc.getTicks()) < ticks) {
+      double heading = getHeading();
+      //Serial.println("Heading: " + String(heading) + "\tEncoder: " + String(enc.getTicks()));
+      //Serial.println(String(millis() - startTime) + "," + String(enc.getTicks()));
+      //Serial.print(millis() - startTime); Serial.print(", "); Serial.println(enc.getTicks());
+      double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
+      double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
+      double leftPower = (DRIVE_BASE_SPEED - speedMod);
+      double rightPower = (DRIVE_BASE_SPEED + speedMod);
+      setPower(leftPower, rightPower);
+    }
   }
   setPower(0);
 }

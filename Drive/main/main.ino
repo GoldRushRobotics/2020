@@ -48,14 +48,15 @@ void loop() { //code that can be modified to make robot do whatever
   delay(300);
   turnToHeading(90);
   delay(300);
-  driveDistanceOnHeading(30,  90);
-
-
-  //driveDistanceOnHeading(10, .5,  0);
-  //delay(1000);
-  //turnToHeading(90);
-  //delay(1000);
-  //driveDistanceOnHeading(35, .5,  90);
+  driveDistanceOnHeading(30,90);
+  delay(300);
+  driveDistanceOnHeading(-30,90);
+  delay(300);
+  turnToHeading(0);
+  delay(300);
+  lineFollowForBarCount(1);
+  delay(300);
+  turnToHeading(0);  
   idle();
   
 }
