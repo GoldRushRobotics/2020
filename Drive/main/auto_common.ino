@@ -8,7 +8,7 @@
 #define TURN_MIN_SPEED 0.1
 #define TURN_TURN_MULT 0.03
 #define TURN_TURN_POW 0.5
-#define TURN_DEGREE_CUTOFF 5
+#define TURN_DEGREE_CUTOFF 3
 
 #define LF_BASE_SPEED 0.4
 #define LF_SPEED_MOD 0.1
