@@ -2,6 +2,20 @@
 #define TICKS_PER_ROTATION 500 //370
 #define TICKS_PER_CM (TICKS_PER_ROTATION / (WHEEL_DIAMETER_CM * M_PI))
 
+Servo grabber;
+
+void closeGrabber(int delay_msc){
+  grabber.attach(4);
+  grabber.write(29); // close position
+  delay(delay_msc);
+}
+
+void openGrabber(int delay_msc) {
+  grabber.attach(4);
+  grabber.write(60); // open position
+  delay(delay_msc);
+}
+
 double distanceToTicks(double distance) {
   if(distance < 0){
     return -1.0 * distance * TICKS_PER_CM;

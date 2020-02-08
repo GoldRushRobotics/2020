@@ -12,6 +12,7 @@
 #define LIGHT_LEFT 4
 #define LIGHT_CENTER 8
 #define LIGHT_RIGHT 7
+#define grabberPin 4
 
 Servo servoLeft;
 Servo servoRight;
@@ -38,7 +39,7 @@ void loop() { //code that can be modified to make robot do whatever
 
 //  delay(1000);
 //  driveDistanceOnHeading(100, 0);
-
+/*
   lineFollowForBarCount(5);
 
   delay(1000);
@@ -57,8 +58,8 @@ void loop() { //code that can be modified to make robot do whatever
   lineFollowForBarCount(1);
   delay(300);
   turnToHeading(0);  
-  idle();
-  
+  idle();*/
+  closeGrabber(2000);
 }
 
 /*
@@ -85,11 +86,12 @@ void setup() { //setups up all sensors / actuators
   servoRight.attach(SERVO_RIGHT); // right servo
 
   enc.attach();
-
+  openGrabber(2000);
+  
   lightLeft.attach(LIGHT_LEFT);
   lightCenter.attach(LIGHT_CENTER);
   lightRight.attach(LIGHT_RIGHT);
-
+/*
   // initialize the imu
   if(!bno.begin())
   {
@@ -101,5 +103,5 @@ void setup() { //setups up all sensors / actuators
   bno.setExtCrystalUse(true);
   Serial.println("IMU initialized!");
   delay(500);
-  headingOffset = getHeading();
+  headingOffset = getHeading();*/
 }
