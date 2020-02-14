@@ -4604,6 +4604,8 @@ Source: http://onsemi.com .. MBR0520LT1-D.pdf</description>
 <part name="SUPPLY22" library="supply2" deviceset="GND" device=""/>
 <part name="SOL2" library="supply1" deviceset="VDD" device="" value="Vsolenoid"/>
 <part name="SOL3" library="supply1" deviceset="VDD" device="" value="Vsolenoid"/>
+<part name="NC" library="wirepad" deviceset="1,6/0,8" device=""/>
+<part name="SUPPLY23" library="supply2" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -4676,6 +4678,8 @@ Source: http://onsemi.com .. MBR0520LT1-D.pdf</description>
 <instance part="SUPPLY22" gate="GND" x="78.74" y="73.66"/>
 <instance part="SOL2" gate="G$1" x="73.66" y="88.9"/>
 <instance part="SOL3" gate="G$1" x="78.74" y="88.9"/>
+<instance part="NC" gate="P" x="48.26" y="91.44" rot="R270"/>
+<instance part="SUPPLY23" gate="GND" x="48.26" y="86.36"/>
 </instances>
 <busses>
 </busses>
@@ -4770,6 +4774,11 @@ Source: http://onsemi.com .. MBR0520LT1-D.pdf</description>
 <pinref part="SUPPLY22" gate="GND" pin="GND"/>
 <pinref part="C4" gate="G$1" pin="2"/>
 <wire x1="78.74" y1="76.2" x2="78.74" y2="78.74" width="0.1524" layer="91"/>
+<junction x="78.74" y="76.2"/>
+</segment>
+<segment>
+<pinref part="NC" gate="P" pin="P"/>
+<pinref part="SUPPLY23" gate="GND" pin="GND"/>
 </segment>
 </net>
 <net name="VCC" class="0">
