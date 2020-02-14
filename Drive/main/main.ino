@@ -16,7 +16,7 @@
 #define STEPPER 5
 #define STEPPER_DIR 6
 
-#define RUN_STEPPER_CNT 5
+#define RUN_STEPPER_CNT 3
 
 Servo servoLeft;
 Servo servoRight;
