@@ -13,6 +13,10 @@
 #define LIGHT_CENTER 8
 #define LIGHT_RIGHT 7
 #define grabberPin 4
+#define STEPPER 5
+#define STEPPER_DIR 6
+
+#define RUN_STEPPER_CNT 5
 
 Servo servoLeft;
 Servo servoRight;
@@ -38,7 +42,7 @@ void loop() { //code that can be modified to make robot do whatever
   idle();*/
 
 //  delay(1000);
-//  driveDistanceOnHeading(100, 0);
+  //driveDistanceOnHeading(100, 0);
 /*
   lineFollowForBarCount(5);
 
@@ -59,9 +63,12 @@ void loop() { //code that can be modified to make robot do whatever
   delay(300);
   turnToHeading(0);  
   idle();*/
-  closeGrabber(2000);
+//  raiseStack(RUN_STEPPER_CNT);
+//  delay(3000);
+//  lowerStack(RUN_STEPPER_CNT);
+//  delay(3000);
+//  closeGrabber(2000);
 }
-
 /*
  * PIN LAYOUTS:
  * 
@@ -84,9 +91,11 @@ void setup() { //setups up all sensors / actuators
   
   servoLeft.attach(SERVO_LEFT);  // left servo
   servoRight.attach(SERVO_RIGHT); // right servo
-
+  
+  pinMode(STEPPER, OUTPUT);
+  pinMode(STEPPER_DIR, OUTPUT);
   enc.attach();
-  openGrabber(2000);
+//  openGrabber(2000);
   
   lightLeft.attach(LIGHT_LEFT);
   lightCenter.attach(LIGHT_CENTER);

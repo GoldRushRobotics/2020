@@ -91,3 +91,28 @@ void setPower(double leftPower, double rightPower) //sets the speed of the servo
 void setPower(double power) {
   setPower(power, power);
 }
+
+void raiseStack(int run_cnt)
+{
+  digitalWrite(STEPPER_DIR, LOW); //Pull direction pin low to move "forward"
+  for(int x= 0; x<(1000*run_cnt); x++)  //Loop the forward stepping enough times for motion to be visible
+  {
+    digitalWrite(STEPPER ,HIGH); //Trigger one step forward
+    delayMicroseconds(500);
+    digitalWrite(STEPPER,LOW); //Pull step pin low so it can be triggered again
+    delayMicroseconds(500);
+  }
+}
+
+//Reverse default microstep mode function
+void lowerStack(int run_cnt)
+{
+  digitalWrite(STEPPER_DIR, HIGH); //Pull direction pin high to move in "reverse"
+  for(int x= 0; x<(1000*run_cnt); x++)  //Loop the stepping enough times for motion to be visible
+  {
+    digitalWrite(STEPPER, HIGH); //Trigger one step
+    delayMicroseconds(500);
+    digitalWrite(STEPPER, LOW); //Pull step pin low so it can be triggered again
+    delayMicroseconds(500);
+  }
+}
