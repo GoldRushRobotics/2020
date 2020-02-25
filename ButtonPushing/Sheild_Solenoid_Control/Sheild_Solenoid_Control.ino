@@ -27,7 +27,7 @@ void loop() {
   controller.writeReg(Tle94112::PWM1_DC_CTRL, 0x03, 0xFF, 255);
   controller.writeReg(Tle94112::PWM2_DC_CTRL, 0x03, 0xFF, 0);
   
-  for(int i = 0; i < 2001; i++){
+  for(int i = 0; i < 7501; i++){
       // get pi digit from pi2000.h
       char c = pgm_read_byte_near(pi + i);
       
@@ -37,7 +37,7 @@ void loop() {
       //Serial.println(c);
 
       // if none of the limit switches are pressed, do nothing
-      while(digitalRead(7) != HIGH || digitalRead(6) != HIGH){}
+      while(digitalRead(7) != HIGH){}
 
       // a limit switch is triggered
 
@@ -83,5 +83,6 @@ void loop() {
         delay(Delay);
         controller.configHB(controller.TLE_HB9, controller.TLE_HIGH, controller.TLE_PWM1, 0);
       }
+      delay(Delay);
   }
 }
