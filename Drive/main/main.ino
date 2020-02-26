@@ -6,17 +6,20 @@
 #include <math.h>
 #include "Sensors.h"
 
-#define SERVO_LEFT 11
-#define SERVO_RIGHT 10
+//could be switched digital pins 4-6
+#define SERVO_LEFT 6
+#define SERVO_RIGHT 4
+#define grabberPin 5 //servo for grabber
 
-#define LIGHT_LEFT 4
-#define LIGHT_CENTER 8
-#define LIGHT_RIGHT 7
-#define grabberPin 4
-#define STEPPER 5
-#define STEPPER_DIR 6
+#define LIGHT_LEFT A4
+#define LIGHT_CENTER A2
+#define LIGHT_RIGHT A3
 
-#define RUN_STEPPER_CNT 3
+//could be switched A0 or A1
+#define STEPPER A0
+#define STEPPER_DIR A1
+
+#define RUN_STEPPER_CNT 3 //variable for the stepper count
 
 Servo servoLeft;
 Servo servoRight;
@@ -40,7 +43,8 @@ void loop() { //code that can be modified to make robot do whatever
   delay(1000);
   lineFollowForBarCount(5);
   idle();*/
-
+  Serial.println(String(getHeading()));
+  //Serial.println(String(lightLeft.read()) + "\t" + String(lightCenter.read()) + "\t" + String(lightRight.read()));
 //  delay(1000);
   //driveDistanceOnHeading(100, 0);
 /*
@@ -100,7 +104,7 @@ void setup() { //setups up all sensors / actuators
   lightLeft.attach(LIGHT_LEFT);
   lightCenter.attach(LIGHT_CENTER);
   lightRight.attach(LIGHT_RIGHT);
-/*
+
   // initialize the imu
   if(!bno.begin())
   {
@@ -112,5 +116,5 @@ void setup() { //setups up all sensors / actuators
   bno.setExtCrystalUse(true);
   Serial.println("IMU initialized!");
   delay(500);
-  headingOffset = getHeading();*/
+  headingOffset = getHeading();
 }
