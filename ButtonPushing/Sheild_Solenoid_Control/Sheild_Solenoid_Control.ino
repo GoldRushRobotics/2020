@@ -7,6 +7,8 @@ Tle94112 controller = Tle94112();
 
 // delay (this plus deployment time equals 25ms)
 int Delay = 19;
+char push_number = 'A'; //the button we should currently push. Initalized to something random so that we don't count the first button as a double press
+char last_number = 'A'; //the last number that was pushed. Initalized to something random
 
 void setup() {
   // Enable MotorController Tle94112
@@ -19,6 +21,8 @@ void setup() {
   // config limit switches
   pinMode(7, INPUT);
   pinMode(6, INPUT);
+
+  delay(5000); //wait 5 seconds for testing
 }
 
 
@@ -29,56 +33,60 @@ void loop() {
   
   for(int i = 0; i < 7501; i++){
       // get pi digit from pi2000.h
-      char c = pgm_read_byte_near(pi + i);
+
+      last_number=push_number; //record the last pushed number so that we don't forget it when we read in the current number we should be pushing
+      push_number = pgm_read_byte_near(pi + i);
+
+      if (push_number == last_number) delay(100); //if we are pushing the same button as last time, wait awhile so that we can give the solenoid time to settle down
       
       //for testing:
       //String s = "0123456789";
-      //char c = '0'; 
+      //char push_number = '0'; 
       //Serial.println(c);
 
       // if none of the limit switches are pressed, do nothing
-      while(digitalRead(7) != HIGH){}
-
+      //while(digitalRead(7) != HIGH){}
+      
       // a limit switch is triggered
-
+      
       // engage the solenoid corresponding to that pi digit, leave it out for 25 ms, retract it
-      if(c == '0'){
+      if(push_number == '0'){
         controller.configHB(controller.TLE_HB10, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB10, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '1'){
+      } else if(push_number == '1'){
         controller.configHB(controller.TLE_HB1, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB1, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '2'){
+      } else if(push_number == '2'){
         controller.configHB(controller.TLE_HB2, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB2, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '3'){
+      } else if(push_number == '3'){
         controller.configHB(controller.TLE_HB3, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB3, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '4'){
+      } else if(push_number == '4'){
         controller.configHB(controller.TLE_HB4, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB4, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '5'){
+      } else if(push_number == '5'){
         controller.configHB(controller.TLE_HB5, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB5, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '6'){
+      } else if(push_number == '6'){
         controller.configHB(controller.TLE_HB6, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB6, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '7'){
+      } else if(push_number == '7'){
         controller.configHB(controller.TLE_HB7, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB7, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '8'){
+      } else if(push_number == '8'){
         controller.configHB(controller.TLE_HB8, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB8, controller.TLE_HIGH, controller.TLE_PWM1, 0);
-      } else if(c == '9'){
+      } else if(push_number == '9'){
         controller.configHB(controller.TLE_HB9, controller.TLE_HIGH, controller.TLE_NOPWM, 0);
         delay(Delay);
         controller.configHB(controller.TLE_HB9, controller.TLE_HIGH, controller.TLE_PWM1, 0);
