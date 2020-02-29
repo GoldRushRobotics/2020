@@ -7,12 +7,12 @@
 #include "Sensors.h"
 
 //could be switched digital pins 4-6
-#define SERVO_LEFT 6
-#define SERVO_RIGHT 4
-#define grabberPin 5 //servo for grabber
+#define SERVO_LEFT 5
+#define SERVO_RIGHT 6
+#define grabberPin 4 //servo for grabber
 
-#define LIGHT_LEFT A4
-#define LIGHT_CENTER A2
+#define LIGHT_LEFT A2
+#define LIGHT_CENTER A6
 #define LIGHT_RIGHT A3
 
 //could be switched A0 or A1
@@ -38,16 +38,16 @@ double currHeading = 0;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 void loop() { //code that can be modified to make robot do whatever
-  //Serial.println(enc.getTicks());  
   /*driveDistance(13, -.3);
   delay(1000);
   lineFollowForBarCount(5);
   idle();*/
-  Serial.println(String(getHeading()));
+  //Serial.println(String(getHeading()));
   //Serial.println(String(lightLeft.read()) + "\t" + String(lightCenter.read()) + "\t" + String(lightRight.read()));
+  //Serial.println(lightRight.read());
 //  delay(1000);
   //driveDistanceOnHeading(100, 0);
-/*
+  //Serial.println(enc.getTicks());
   lineFollowForBarCount(5);
 
   delay(1000);
@@ -66,12 +66,13 @@ void loop() { //code that can be modified to make robot do whatever
   lineFollowForBarCount(1);
   delay(300);
   turnToHeading(0);  
-  idle();*/
-//  raiseStack(RUN_STEPPER_CNT);
+  idle();
+  //raiseStack(RUN_STEPPER_CNT);
+   // openGrabber(300);
+   //lowerStack(RUN_STEPPER_CNT);
 //  delay(3000);
-//  lowerStack(RUN_STEPPER_CNT);
-//  delay(3000);
-//  closeGrabber(2000);
+    
+   //closeGrabber(300);
 }
 /*
  * PIN LAYOUTS:

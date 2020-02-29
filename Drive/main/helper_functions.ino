@@ -6,13 +6,13 @@ Servo grabber;
 
 void closeGrabber(int delay_msc){
   grabber.attach(4);
-  grabber.write(29); // close position
+  grabber.write(280); // close position
   delay(delay_msc);
 }
 
 void openGrabber(int delay_msc) {
   grabber.attach(4);
-  grabber.write(60); // open position
+  grabber.write(40); // open position
   delay(delay_msc);
 }
 
