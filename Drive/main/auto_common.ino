@@ -1,17 +1,20 @@
-#define DRIVE_BASE_SPEED 0.3
-#define DRIVE_MAX_SPEED_MOD 0.1
+#define DRIVE_BASE_SPEED 0.15
+#define DRIVE_MAX_SPEED_MOD 0.08
 #define DRIVE_TURN_MULT 0.01
-#define DRIVE_TURN_POW 1.2
+#define DRIVE_TURN_POW 1.0
 #define LIGHT_TURN_MOD 5
 
-#define TURN_MAX_SPEED_MOD 0.3
-#define TURN_MIN_SPEED 0.1
-#define TURN_TURN_MULT 0.03
+#define TURN_MAX_SPEED_MOD 0.4
+#define TURN_MIN_SPEED 0.15
+#define TURN_TURN_MULT 0.02
 #define TURN_TURN_POW 0.5
-#define TURN_DEGREE_CUTOFF 3
+#define TURN_DEGREE_CUTOFF 4
 
-#define LF_BASE_SPEED 0.4
-#define LF_SPEED_MOD 0.1
+#define LF_BASE_SPEED 0.15
+#define LF_SPEED_MOD 0.025
+
+#define SERVO_GRABBER_OPEN_POS 100
+#define SERVO_GRABBER_CLOSE_POS 52
 
 void driveDistance(double distance, double power) {
   Serial.println("Driving distance of " + String(distance) + " cm");
@@ -35,60 +38,49 @@ void driveDistance(double distance, double power) {
   setPower(0);
 }
 
-void driveDistanceOnHeading(double distance, double target) {
+void driveDistanceOnHeading(double distance, double targetHeading) {
   //Serial.println("Driving distance of " + String(distance) + " cm at heading " + String(target));
   if (distance == 0) {// || power == 0) {
     return;
   }
-  if (distance < 0) {
-    enc.reset();
-    double ticks = abs(distanceToTicks(distance));
-    targetHeading = target;
-  
-    setPower(-1.0 * DRIVE_BASE_SPEED);
-    unsigned long startTime = millis();
-    while (abs(enc.getTicks()) < ticks) {
-      double heading = getHeading();
-      //Serial.println("Heading: " + String(heading) + "\tEncoder: " + String(enc.getTicks()));
-      //Serial.println(String(millis() - startTime) + "," + String(enc.getTicks()));
-      //Serial.print(millis() - startTime); Serial.print(", "); Serial.println(enc.getTicks());
-      double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
-      double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
-      double leftPower = (-1.0 * DRIVE_BASE_SPEED - speedMod);
-      double rightPower = (-1.0 * DRIVE_BASE_SPEED + speedMod);
-      setPower(leftPower, rightPower);
-    }
-  }
-  else{
-    enc.reset();
-    double ticks = abs(distanceToTicks(distance));
-    targetHeading = target;
-  
-    setPower(DRIVE_BASE_SPEED);
-    unsigned long startTime = millis();
-    while (abs(enc.getTicks()) < ticks) {
-      double heading = getHeading();
-      //Serial.println("Heading: " + String(heading) + "\tEncoder: " + String(enc.getTicks()));
-      //Serial.println(String(millis() - startTime) + "," + String(enc.getTicks()));
-      //Serial.print(millis() - startTime); Serial.print(", "); Serial.println(enc.getTicks());
-      double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
-      double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
-      double leftPower = (DRIVE_BASE_SPEED - speedMod);
-      double rightPower = (DRIVE_BASE_SPEED + speedMod);
-      setPower(leftPower, rightPower);
-    }
+  enc.reset();
+  double ticks = abs(distanceToTicks(distance));
+  double dir = signum(distance);
+
+  setPower(DRIVE_BASE_SPEED * dir);
+  while (abs(enc.getTicks()) < ticks) {
+    driveGyroLoopIteration(targetHeading, dir);
   }
   setPower(0);
 }
 
+void driveGyroLoopIteration(double targetHeading, double dir) {
+    double heading = getHeadingDiff(targetHeading);
+    Serial.println("Heading: " + String(heading));
+    double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
+    double speedMod = clip(speedModCalc * dir, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
+    double leftPower = DRIVE_BASE_SPEED - speedMod;
+    double rightPower = DRIVE_BASE_SPEED + speedMod;
+    setPower(leftPower * dir, rightPower * dir);
+}
+
 void lineFollowForBarCount(int barCount) {
+  lineFollowForBarCount(barCount, 0);
+}
+
+void lineFollowForBarCount(int barCount, double targetHeading) {
   Serial.println("Following line for " + String(barCount) + " bars");
   bool prevSeeWhite = true;
   int currBarCount = 0;
   while (currBarCount < barCount) {
-    lineFollowLoopIteration();
-
+//    Serial.println("Gyro heading: " + String(getHeadingDiff(targetHeading)) + ", " + String(headingOffset));
     bool currSeeWhite = lightLeft.read() == 1 && lightRight.read() == 1;
+    if (currSeeWhite) {
+      driveGyroLoopIteration(targetHeading, 1.0);
+    }
+    else {
+      lineFollowLoopIteration();
+    }
     if (!prevSeeWhite && currSeeWhite) {
       currBarCount++;
     }
@@ -106,14 +98,16 @@ void lineFollowForSeconds(double seconds) {
 }
 
 void lineFollowLoopIteration() { //stays on the line with infrared sensors
-  if (lightLeft.read() == 1 && lightRight.read() == 1) {
-    setPower(LF_BASE_SPEED, LF_BASE_SPEED); // go straight
-  } 
-  else if (lightCenter.read() == 1) {
-    setPower(LF_BASE_SPEED - LF_SPEED_MOD, LF_BASE_SPEED); // turn left
+//  if (lightLeft.read() == 1 && lightRight.read() == 1) {
+////    setPower(LF_BASE_SPEED, LF_BASE_SPEED); // go straight
+//    // should not get here
+//  } 
+//  else 
+  if (lightCenter.read() == 1) {
+    setPower(LF_BASE_SPEED - LF_SPEED_MOD, LF_BASE_SPEED + LF_SPEED_MOD); // turn left
   }
-  else if (lightCenter.read() == 0) {
-    setPower(LF_BASE_SPEED, LF_BASE_SPEED - LF_SPEED_MOD); // turn right
+  else {
+    setPower(LF_BASE_SPEED + LF_SPEED_MOD, LF_BASE_SPEED - LF_SPEED_MOD); // turn right
   }
 }
 
@@ -130,11 +124,10 @@ void getOffBlock(){
   
 }
 
-void driveGyroForSeconds(double seconds, double target) {
+void driveGyroForSeconds(double seconds, double targetHeading) {
   unsigned long startTime = millis();
-  targetHeading = target;
   while (millis() - startTime < seconds * 1000) {
-    double heading = getHeading();
+    double heading = getHeadingDiff(targetHeading);
     Serial.println("Heading: " + String(heading));
     double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
     double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
@@ -147,6 +140,7 @@ void driveGyroForSeconds(double seconds, double target) {
 
 void lineFollow() {
   double startHeading = 0;//getHeading();
+  double targetHeading = 0;
   while (true) {
     if (digitalRead(2) == 0 && digitalRead(3) == 1) {
       targetHeading = startHeading - LIGHT_TURN_MOD; // turn left
@@ -156,7 +150,7 @@ void lineFollow() {
       targetHeading = startHeading; // go straight
     }
     
-    double heading = getHeading();
+    double heading = getHeadingDiff(targetHeading);
     Serial.println("Heading: " + String(heading));
     double speedModCalc = signum(heading) * DRIVE_TURN_MULT * pow(abs(heading), DRIVE_TURN_POW);
     double speedMod = clip(speedModCalc, -DRIVE_MAX_SPEED_MOD, DRIVE_MAX_SPEED_MOD);
@@ -167,12 +161,15 @@ void lineFollow() {
   }
 }
 
-void turnToHeading(double target) {
-  Serial.println("Turning to heading " + String(target));
-  targetHeading = target;
+void turnToHeading(double targetHeading) {
+  turnToHeading(targetHeading, false);
+}
+
+void turnToHeading(double targetHeading, bool goSofter) {
+  Serial.println("Turning to heading " + String(targetHeading));
   unsigned long startTime = millis();
   while (true) {
-    double heading = getHeading();
+    double heading = getHeadingDiff(targetHeading);
     Serial.println("Heading: " + String(heading));
     double speedModCalc = signum(heading) * TURN_TURN_MULT * pow(abs(heading), TURN_TURN_POW);
     double speedMod = clip(speedModCalc, -TURN_MAX_SPEED_MOD, TURN_MAX_SPEED_MOD);
@@ -180,6 +177,7 @@ void turnToHeading(double target) {
     if (abs(heading) > TURN_DEGREE_CUTOFF) {
       startTime = millis();
       if (abs(speedMod) < TURN_MIN_SPEED) {
+//        speedMod = signum(speedMod) * TURN_CONST_SPEED;
         speedMod = signum(speedMod) * TURN_MIN_SPEED;
       }
     } else {
@@ -187,6 +185,9 @@ void turnToHeading(double target) {
         setPower(0, 0);
         return;
       }
+    }
+    if (goSofter) {
+      speedMod *= 0.50;
     }
     double leftPower = -speedMod;
     double rightPower = speedMod;
@@ -199,6 +200,43 @@ void idle() {
   while (true) {
     delay(100);
   }
+}
+
+void raiseStack(int run_cnt)
+{
+  digitalWrite(STEPPER_DIR_PIN, LOW); //Pull direction pin low to move "forward"
+  for(int x= 0; x<(1000*run_cnt); x++)  //Loop the forward stepping enough times for motion to be visible
+  {
+    digitalWrite(STEPPER_PIN ,HIGH); //Trigger one step forward
+    delayMicroseconds(500);
+    digitalWrite(STEPPER_PIN,LOW); //Pull step pin low so it can be triggered again
+    delayMicroseconds(500);
+  }
+}
+
+//Reverse default microstep mode function
+void lowerStack(int run_cnt)
+{
+  digitalWrite(STEPPER_DIR_PIN, HIGH); //Pull direction pin high to move in "reverse"
+  for(int x= 0; x<(1000*run_cnt); x++)  //Loop the stepping enough times for motion to be visible
+  {
+    digitalWrite(STEPPER_PIN, HIGH); //Trigger one step
+    delayMicroseconds(500);
+    digitalWrite(STEPPER_PIN, LOW); //Pull step pin low so it can be triggered again
+    delayMicroseconds(500);
+  }
+}
+
+void closeGrabber(int delay_msc){
+  grabber.attach(4);
+  grabber.write(SERVO_GRABBER_CLOSE_POS); // close position
+  delay(delay_msc);
+}
+
+void openGrabber(int delay_msc) {
+  grabber.attach(4);
+  grabber.write(SERVO_GRABBER_OPEN_POS); // open position
+  delay(delay_msc);
 }
 
 

@@ -2,20 +2,6 @@
 #define TICKS_PER_ROTATION 500 //370
 #define TICKS_PER_CM (TICKS_PER_ROTATION / (WHEEL_DIAMETER_CM * M_PI))
 
-Servo grabber;
-
-void closeGrabber(int delay_msc){
-  grabber.attach(4);
-  grabber.write(280); // close position
-  delay(delay_msc);
-}
-
-void openGrabber(int delay_msc) {
-  grabber.attach(4);
-  grabber.write(40); // open position
-  delay(delay_msc);
-}
-
 double distanceToTicks(double distance) {
   if(distance < 0){
     return -1.0 * distance * TICKS_PER_CM;
@@ -58,6 +44,10 @@ double readDouble() {
 }
 
 double getHeading() {
+  return getHeadingDiff(0);
+}
+
+double getHeadingDiff(double targetHeading) {
   sensors_event_t event;
   bno.getEvent(&event);
   
@@ -84,35 +74,13 @@ double clip(double value, double minVal, double maxVal) {
 
 void setPower(double leftPower, double rightPower) //sets the speed of the servos
 {
+  leftPower *= 0.80;
+  rightPower *= 1.15;
+//  Serial.println("Setting powers left=" + String(leftPower) + ",\tright=" + String(rightPower));
   servoLeft.write(90 - leftPower * 90); 
   servoRight.write(90 + rightPower * 90);
 }
 
 void setPower(double power) {
   setPower(power, power);
-}
-
-void raiseStack(int run_cnt)
-{
-  digitalWrite(STEPPER_DIR, LOW); //Pull direction pin low to move "forward"
-  for(int x= 0; x<(1000*run_cnt); x++)  //Loop the forward stepping enough times for motion to be visible
-  {
-    digitalWrite(STEPPER ,HIGH); //Trigger one step forward
-    delayMicroseconds(500);
-    digitalWrite(STEPPER,LOW); //Pull step pin low so it can be triggered again
-    delayMicroseconds(500);
-  }
-}
-
-//Reverse default microstep mode function
-void lowerStack(int run_cnt)
-{
-  digitalWrite(STEPPER_DIR, HIGH); //Pull direction pin high to move in "reverse"
-  for(int x= 0; x<(1000*run_cnt); x++)  //Loop the stepping enough times for motion to be visible
-  {
-    digitalWrite(STEPPER, HIGH); //Trigger one step
-    delayMicroseconds(500);
-    digitalWrite(STEPPER, LOW); //Pull step pin low so it can be triggered again
-    delayMicroseconds(500);
-  }
 }
