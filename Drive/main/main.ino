@@ -53,7 +53,7 @@ void loop() { //code that can be modified to make robot do whatever
 //  setPower(0.5);
 //  delay(5000);
 //  setPower(0);
-  
+  // uncomment below when done --------------------
   openGrabber(300);
   lineFollowForBarCount(5);
   delay(1000);
@@ -66,6 +66,8 @@ void loop() { //code that can be modified to make robot do whatever
   driveDistanceOnHeading(40, 88);
   delay(3000);
   closeGrabber(500);
+  raiseStack(RUN_STEPPER_CNT);
+  delay(1000);
   driveDistanceOnHeading(-40, 84);
   delay(300);
   turnToHeading(0);
@@ -73,24 +75,10 @@ void loop() { //code that can be modified to make robot do whatever
   lineFollowForBarCount(1);
   delay(300);
   turnToHeading(0, true);
+  lowerStack(RUN_STEPPER_CNT);
   idle();
 
-  //raiseStack(RUN_STEPPER_CNT);
-   // openGrabber(300);
-//  delay(3000);
-//  Serial.println("Lowering stack...");
-////  lowerStack(RUN_STEPPER_CNT);
-//  int run_cnt = RUN_STEPPER_CNT;
-//  digitalWrite(STEPPER_DIR_PIN, HIGH); //Pull direction pin high to move in "reverse"
-//  for(int x= 0; x<(1000*run_cnt); x++)  //Loop the stepping enough times for motion to be visible
-//  {
-//    digitalWrite(STEPPER_PIN, HIGH); //Trigger one step
-//    delayMicroseconds(500);
-//    digitalWrite(STEPPER_PIN, LOW); //Pull step pin low so it can be triggered again
-//    delayMicroseconds(500);
-//  }
-//  Serial.println("Stack lowered!");
-//  idle();
+// -----------------------------------------
 }
 /*
  * PIN LAYOUTS:
@@ -118,7 +106,6 @@ void setup() { //setups up all sensors / actuators
   pinMode(STEPPER_PIN, OUTPUT);
   pinMode(STEPPER_DIR_PIN, OUTPUT);
   enc.attach();
-//  openGrabber(2000);
   
   lightLeft.attach(LIGHT_LEFT_PIN);
   lightCenter.attach(LIGHT_CENTER_PIN);
