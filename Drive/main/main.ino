@@ -10,6 +10,7 @@
 #define SERVO_LEFT_PIN 5
 #define SERVO_RIGHT_PIN 6
 #define SERVO_GRABBER_PIN 4 //servo for grabber
+#define SERVO_DELIVER 11
 
 #define LIGHT_LEFT_PIN A2
 #define LIGHT_CENTER_PIN A6
@@ -24,6 +25,7 @@
 Servo servoLeft;
 Servo servoRight;
 Servo grabber;
+Servo deliverer;
 
 Encoder enc;
 
@@ -38,22 +40,8 @@ double currHeading = 0;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 void loop() { //code that can be modified to make robot do whatever
-  /*driveDistance(13, -.3);
-  delay(1000);
-  lineFollowForBarCount(5);
-  idle();*/
-  //Serial.println(String(getHeading()));
-  //Serial.println(String(lightLeft.read()) + "\t" + String(lightCenter.read()) + "\t" + String(lightRight.read()));
-  //Serial.println(lightRight.read());
-//  delay(1000);
-  //driveDistanceOnHeading(100, 0);
-  //Serial.println(enc.getTicks());
-
-//  driveDistanceOnHeading(1000, 0);
-//  setPower(0.5);
-//  delay(5000);
-//  setPower(0);
-  // uncomment below when done --------------------
+  
+  /*/ uncomment below when done --------------------
   openGrabber(300);
   lineFollowForBarCount(5);
   delay(1000);
@@ -77,6 +65,8 @@ void loop() { //code that can be modified to make robot do whatever
   turnToHeading(0, true);
   lowerStack(RUN_STEPPER_CNT);
   idle();
+*/
+
 
 // -----------------------------------------
 }
@@ -102,6 +92,7 @@ void setup() { //setups up all sensors / actuators
   
   servoLeft.attach(SERVO_LEFT_PIN);  // left servo
   servoRight.attach(SERVO_RIGHT_PIN); // right servo
+  deliverer.attach(SERVO_DELIVER);
   
   pinMode(STEPPER_PIN, OUTPUT);
   pinMode(STEPPER_DIR_PIN, OUTPUT);
@@ -124,4 +115,6 @@ void setup() { //setups up all sensors / actuators
   delay(3000);
   headingOffset = getHeading();
   Serial.println("Heading offset set to: " + String(headingOffset));
+
+  deliverer.write(130);
 }

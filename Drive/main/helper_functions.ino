@@ -9,6 +9,12 @@ double distanceToTicks(double distance) {
   return distance * TICKS_PER_CM;
 }
 
+void deliver(int angle){ //decrease angle int to move up
+  deliverer.write(angle);
+
+  
+}
+
 bool isValidDouble(String s) {
   bool hasUsedDigit = true;
   bool hasUsedDot = false;
