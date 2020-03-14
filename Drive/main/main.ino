@@ -46,18 +46,18 @@ void loop() { //code that can be modified to make robot do whatever
   //lowerStack(3);
   //idle();
   
-  driveDistanceOnHeading(-16, -6);
+  driveDistanceOnHeading(-18, -6);
   delay(300);
 
   raiseStack(2); //release Hugger
-  delay(1100);
-  lowerStack(2);
+  delay(650);
   
-  for(int x = KICKER_ORIGIN; x >= 135; x-=2) {
+  
+  for(int x = KICKER_ORIGIN; x >= 145; x-=2) {
     deliverer.write(x);
     delay(70);
   }
-  
+  lowerStack(2);
   deliverer.write(KICKER_ORIGIN);
 
   //uncomment below when done --------------------
