@@ -37,18 +37,28 @@ void driveDistance(double distance, double power) {
   }
   setPower(0);
 }
+//void driveDistanceOnHeadingBar(double distance, double targetHeading, bool bar) {
+//  driveDistanceOnHeading(double distance, 
+//}
 
 void driveDistanceOnHeading(double distance, double targetHeading) {
   //Serial.println("Driving distance of " + String(distance) + " cm at heading " + String(target));
   if (distance == 0) {// || power == 0) {
     return;
   }
+
+  
   enc.reset();
   double ticks = abs(distanceToTicks(distance));
   double dir = signum(distance);
+  bool currSeeWhite = false;
 
   setPower(DRIVE_BASE_SPEED * dir);
   while (abs(enc.getTicks()) < ticks) {
+    /*if(currSeeWhite = lightLeft.read() == 1 && lightRight.read() == 1) {
+      setPower(0);
+      return;
+    }*/
     driveGyroLoopIteration(targetHeading, dir);
   }
   setPower(0);
@@ -89,6 +99,27 @@ void lineFollowForBarCount(int barCount, double targetHeading) {
   setPower(0);
 }
 
+void lineFollowForBarCountInverse(int barCount, double targetHeading) {
+  Serial.println("Following line for " + String(barCount) + " bars");
+  bool prevSeeWhite = true;
+  int currBarCount = 0;
+  while (currBarCount < barCount) {
+//    Serial.println("Gyro heading: " + String(getHeadingDiff(targetHeading)) + ", " + String(headingOffset));
+    bool currSeeWhite = lightLeft.read() == 1 && lightRight.read() == 1;
+    if (currSeeWhite) {
+      driveGyroLoopIteration(targetHeading, 1.0);
+    }
+    else {
+      lineFollowLoopIterationInverse();
+    }
+    if (!prevSeeWhite && currSeeWhite) {
+      currBarCount++;
+    }
+    prevSeeWhite = currSeeWhite;
+  }
+  setPower(0);
+}
+
 void lineFollowForSeconds(double seconds) {
   Serial.println("Following line for " + String(seconds) + " seconds");
   unsigned long startTime = millis();
@@ -108,6 +139,15 @@ void lineFollowLoopIteration() { //stays on the line with infrared sensors
   }
   else {
     setPower(LF_BASE_SPEED + LF_SPEED_MOD, LF_BASE_SPEED - LF_SPEED_MOD); // turn right
+  }
+}
+
+void lineFollowLoopIterationInverse() { //stays on the line with infrared sensors
+  if (lightCenter.read() == 1) {
+    setPower(LF_BASE_SPEED + LF_SPEED_MOD, LF_BASE_SPEED - LF_SPEED_MOD); // turn right
+  }
+  else {
+    setPower(LF_BASE_SPEED - LF_SPEED_MOD, LF_BASE_SPEED + LF_SPEED_MOD); // turn left
   }
 }
 

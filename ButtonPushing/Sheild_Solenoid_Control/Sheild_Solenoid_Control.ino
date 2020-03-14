@@ -6,7 +6,8 @@
 Tle94112 controller = Tle94112();
 
 // delay (this plus deployment time equals 25ms)
-int Delay = 23; //up from 19
+const int DELAY = 19; //up from 19
+const int REPEAT_DELAY = 80;
 char push_number = 'A'; //the button we should currently push. Initalized to something random so that we don't count the first button as a double press
 char last_number = 'A'; //the last number that was pushed. Initalized to something random
 
@@ -24,7 +25,7 @@ void setup() {
   
   while(digitalRead(7) == LOW) {}; //do nothing while the button is pressed in
 
-  delay(5000); //wait 5 seconds for the hugger to get onto the wall
+  delay(10000); //wait 5 seconds for the hugger to get onto the wall
 }
 
 
@@ -39,7 +40,7 @@ void loop() {
       last_number=push_number; //record the last pushed number so that we don't forget it when we read in the current number we should be pushing
       push_number = pgm_read_byte_near(pi + i);
 
-      if (push_number == last_number) delay(100); //if we are pushing the same button as last time, wait twice the delay time so that we can give the solenoid time to settle down
+      if (push_number == last_number) delay(REPEAT_DELAY); //if we are pushing the same button as last time, wait twice the delay time so that we can give the solenoid time to settle down
       
       //for testing:
       //String s = "0123456789";

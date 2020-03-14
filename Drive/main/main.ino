@@ -10,7 +10,7 @@
 #define SERVO_LEFT_PIN 5
 #define SERVO_RIGHT_PIN 6
 #define SERVO_GRABBER_PIN 4 //servo for grabber
-#define SERVO_DELIVER 11
+#define SERVO_KICKER 11
 
 #define LIGHT_LEFT_PIN A2
 #define LIGHT_CENTER_PIN A6
@@ -21,6 +21,7 @@
 #define STEPPER_DIR_PIN A1
 
 #define RUN_STEPPER_CNT 3 //variable for the stepper count
+#define KICKER_ORIGIN 170
 
 Servo servoLeft;
 Servo servoRight;
@@ -40,14 +41,32 @@ double currHeading = 0;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 void loop() { //code that can be modified to make robot do whatever
+  //raiseStack(1.5);
   
-  /*/ uncomment below when done --------------------
+  //lowerStack(3);
+  //idle();
+  
+  driveDistanceOnHeading(-16, -6);
+  delay(300);
+
+  raiseStack(2); //release Hugger
+  delay(1100);
+  lowerStack(2);
+  
+  for(int x = KICKER_ORIGIN; x >= 135; x-=2) {
+    deliverer.write(x);
+    delay(70);
+  }
+  
+  deliverer.write(KICKER_ORIGIN);
+
+  //uncomment below when done --------------------
   openGrabber(300);
   lineFollowForBarCount(5);
   delay(1000);
   turnToHeading(0, true);
   delay(300);
-  driveDistanceOnHeading(17, 0);
+  driveDistanceOnHeading(15, 0);
   delay(300);
   turnToHeading(90, true);
   delay(300);
@@ -56,18 +75,18 @@ void loop() { //code that can be modified to make robot do whatever
   closeGrabber(500);
   raiseStack(RUN_STEPPER_CNT);
   delay(1000);
-  driveDistanceOnHeading(-40, 84);
+  driveDistanceOnHeading(-42, 84);
   delay(300);
   turnToHeading(0);
   delay(300);
-  lineFollowForBarCount(1);
+  lineFollowForBarCountInverse(1, 0);
   delay(300);
   turnToHeading(0, true);
   lowerStack(RUN_STEPPER_CNT);
+  delay(1500);
+  grabber.write(55);
   idle();
-*/
-
-
+  
 // -----------------------------------------
 }
 /*
@@ -92,7 +111,9 @@ void setup() { //setups up all sensors / actuators
   
   servoLeft.attach(SERVO_LEFT_PIN);  // left servo
   servoRight.attach(SERVO_RIGHT_PIN); // right servo
-  deliverer.attach(SERVO_DELIVER);
+  
+  deliverer.attach(SERVO_KICKER);
+  deliverer.write(KICKER_ORIGIN); //Move kicker to origin
   
   pinMode(STEPPER_PIN, OUTPUT);
   pinMode(STEPPER_DIR_PIN, OUTPUT);
@@ -116,5 +137,4 @@ void setup() { //setups up all sensors / actuators
   headingOffset = getHeading();
   Serial.println("Heading offset set to: " + String(headingOffset));
 
-  deliverer.write(130);
 }

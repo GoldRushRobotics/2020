@@ -9,10 +9,9 @@ double distanceToTicks(double distance) {
   return distance * TICKS_PER_CM;
 }
 
-void deliver(int angle){ //decrease angle int to move up
+void deliver(int angle){ //decrease number to move up
   deliverer.write(angle);
-
-  
+  delay(200);
 }
 
 bool isValidDouble(String s) {
